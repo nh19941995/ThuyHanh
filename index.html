@@ -6,6 +6,10 @@
   <style>
     body {
       background-color: #f7d9da;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
     }
 
     .envlope-wrapper {
@@ -191,86 +195,86 @@
       animation-delay: 0.7s;
     }
 
-    /* Thêm styles cho messages bay lên */
-    .messages {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+    /* Styles cho karaoke text */
+    .karaoke-container {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       z-index: 10;
       pointer-events: none;
+      width: 80%;
+      max-width: 600px;
+      max-height: 70vh;
+      padding: 20px;
+      text-align: justify;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 15px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      overflow-y: auto;
     }
 
-    .message {
-      position: absolute;
+    .karaoke-line {
       font-family: 'Arial', sans-serif;
-      font-size: 16px;
+      font-size: 18px;
       font-weight: bold;
+      margin: 8px 0;
+      min-height: 25px;
+      line-height: 1.4;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      text-align: justify;
+      text-align-last: left;
+      hyphens: auto;
+      word-spacing: 0.1em;
+    }
+
+    .karaoke-line.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .karaoke-line.completed {
+      opacity: 0.7;
+      transform: translateY(0);
+    }
+
+    .karaoke-word {
+      display: inline-block;
+      margin: 0 2px;
+      color: #666;
+      transition: color 0.3s ease, transform 0.3s ease;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .karaoke-word.highlight {
       color: #ff1744;
+      transform: scale(1.1);
       text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-      white-space: nowrap;
+    }
+
+    .karaoke-word.completed {
+      color: #ff69b4;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+
+    .close .karaoke-container {
       opacity: 0;
-      transform: translateY(50px);
-      pointer-events: none;
+      visibility: hidden;
     }
 
-    .close .message {
+    .open .karaoke-container {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .open .reset {
       opacity: 0;
-      animation: none;
-    }
-
-    .open .message {
-      animation: messageFloat 6s ease-out forwards;
-    }
-
-    .message.msg1 {
-      left: 15%;
-      top: 60%;
-      animation-delay: 1s;
-    }
-
-    .message.msg2 {
-      left: 60%;
-      top: 55%;
-      animation-delay: 1.5s;
-    }
-
-    .message.msg3 {
-      left: 25%;
-      top: 45%;
-      animation-delay: 2s;
-    }
-
-    .message.msg4 {
-      left: 70%;
-      top: 40%;
-      animation-delay: 2.5s;
-    }
-
-    .message.msg5 {
-      left: 40%;
-      top: 35%;
-      animation-delay: 3s;
-    }
-
-    @keyframes messageFloat {
-      0% {
-        opacity: 0;
-        transform: translateY(50px) scale(0.8);
-      }
-      20% {
-        opacity: 1;
-        transform: translateY(0px) scale(1);
-      }
-      80% {
-        opacity: 1;
-        transform: translateY(-200px) scale(1);
-      }
-      100% {
-        opacity: 0;
-        transform: translateY(-400px) scale(0.8);
-      }
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
     }
 
     @keyframes slideUp {
@@ -293,6 +297,14 @@
 
     .reset {
       text-align: center;
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 15;
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
     }
 
     .reset button {
@@ -338,19 +350,14 @@
       <div class="heart a2"></div>
       <div class="heart a3"></div>
     </div>
-    <div class="messages">
-      <div class="message msg1">I Love You ❤️</div>
-      <div class="message msg2">Forever Yours 💕</div>
-      <div class="message msg3">You're My Everything 💝</div>
-      <div class="message msg4">Always Together 💑</div>
-      <div class="message msg5">My Heart Belongs to You 💗</div>
+    <div class="karaoke-container" id="karaokeContainer">
+      <!-- Text sẽ được tạo động bằng JavaScript -->
     </div>
   </div>
 </div>
 
 <div class="reset">
   <button id="open">Open</button>
-  <button id="reset">Reset</button>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -358,25 +365,158 @@
   $(document).ready(function () {
     var envelope = $('#envelope');
     var btn_open = $("#open");
-    var btn_reset = $("#reset");
+    var karaokeContainer = $('#karaokeContainer');
+    
+    // Text content
+    var messages = [
+      "Gửi cô bạn nhỏ của tôi,",
+      "Những ngày này chắc hẳn em đang cảm thấy áp lực lắm đúng không? Kỳ thi đại học đang đến gần," ,
+      "và anh biết em đang cố gắng hết sức vì một ước mơ rất đẹp – trở thành điều dưỡng để chăm sóc cho người khác. ",
+      "Anh tự hào lắm, vì em đã chọn con đường yêu thương và tử tế như vậy.",
+      "Anh biết có những lúc mệt mỏi, hoang mang, muốn bỏ cuộc,",
+      "nhưng mong em đừng quên lý do em bắt đầu",
+      "trái tim của em luôn ấm áp và đầy yêu thương.",
+      "Em sinh ra không phải để sống tầm thường,",
+      "em xứng đáng chạm đến ước mơ của mình.",
+      "Và dù kết quả thế nào, em đã can đảm hơn rất nhiều người rồi",
+      "vì em đã dám mơ và dám bước đi.",
+      "Cô bạn nhỏ à, hãy cứ bước tiếp nhé",
+      "Vì phía trước, dù là khó khăn hay rực rỡ",
+      "đó vẫn là hành trình mà anh mong được nắm tay em đi cùng. 💕"
+    ];
+
+    var currentLineIndex = 0;
+    var currentWordIndex = 0;
+    var karaokeInterval;
+    var isPlaying = false;
+
+    // Tạo HTML cho karaoke
+    function createKaraokeHTML() {
+      karaokeContainer.empty();
+      messages.forEach(function(message, lineIndex) {
+        var line = $('<div class="karaoke-line" data-line="' + lineIndex + '"></div>');
+        var words = message.split(' ');
+        words.forEach(function(word, wordIndex) {
+          var wordSpan = $('<span class="karaoke-word" data-word="' + wordIndex + '">' + word + '</span>');
+          line.append(wordSpan);
+        });
+        karaokeContainer.append(line);
+      });
+    }
+
+    // Bắt đầu karaoke effect
+    function startKaraoke() {
+      if (isPlaying) return;
+      isPlaying = true;
+      currentLineIndex = 0;
+      currentWordIndex = 0;
+      
+      // Hiển thị dòng đầu tiên
+      showCurrentLine();
+      
+      karaokeInterval = setInterval(function() {
+        highlightNextWord();
+      }, 314); // Giảm từ 448ms xuống 314ms (nhanh hơn 30% nữa)
+    }
+
+    // Hiển thị dòng hiện tại
+    function showCurrentLine() {
+      // Đánh dấu dòng trước đó là completed
+      if (currentLineIndex > 0) {
+        $('.karaoke-line[data-line="' + (currentLineIndex - 1) + '"]').removeClass('active').addClass('completed');
+      }
+      $('.karaoke-line[data-line="' + currentLineIndex + '"]').addClass('active');
+      
+      // Auto scroll to current line
+      var currentLineElement = $('.karaoke-line[data-line="' + currentLineIndex + '"]');
+      if (currentLineElement.length) {
+        var container = $('#karaokeContainer');
+        var scrollTop = currentLineElement.offset().top - container.offset().top + container.scrollTop() - container.height() / 2 + currentLineElement.height() / 2;
+        container.animate({scrollTop: scrollTop}, 300);
+      }
+    }
+
+    // Highlight từ tiếp theo
+    function highlightNextWord() {
+      var currentLine = $('.karaoke-line[data-line="' + currentLineIndex + '"]');
+      var words = currentLine.find('.karaoke-word');
+      
+      if (currentWordIndex < words.length) {
+        // Highlight từ hiện tại
+        $(words[currentWordIndex]).addClass('highlight');
+        
+        // Đánh dấu từ trước đó là completed
+        if (currentWordIndex > 0) {
+          $(words[currentWordIndex - 1]).removeClass('highlight').addClass('completed');
+        }
+        
+        currentWordIndex++;
+      } else {
+        // Hoàn thành dòng hiện tại
+        words.removeClass('highlight').addClass('completed');
+        currentLineIndex++;
+        currentWordIndex = 0;
+        
+        if (currentLineIndex < messages.length) {
+          // Chuyển sang dòng tiếp theo
+          setTimeout(function() {
+            showCurrentLine();
+          }, 196); // Giảm từ 280ms xuống 196ms (nhanh hơn 30% nữa)
+        } else {
+          // Kết thúc karaoke - đánh dấu dòng cuối cùng là completed
+          $('.karaoke-line[data-line="' + (currentLineIndex - 1) + '"]').removeClass('active').addClass('completed');
+          stopKaraoke();
+          setTimeout(function() {
+            autoReset();
+          }, 1176); // Giảm từ 1680ms xuống 1176ms (nhanh hơn 30% nữa)
+        }
+      }
+    }
+
+    // Dừng karaoke
+    function stopKaraoke() {
+      isPlaying = false;
+      if (karaokeInterval) {
+        clearInterval(karaokeInterval);
+      }
+    }
+
+    // Reset karaoke
+    function resetKaraoke() {
+      stopKaraoke();
+      $('.karaoke-word').removeClass('highlight completed');
+      $('.karaoke-line').removeClass('active completed');
+      currentLineIndex = 0;
+      currentWordIndex = 0;
+      $('#karaokeContainer').scrollTop(0);
+    }
 
     envelope.click(function () {
       open();
     });
+    
     btn_open.click(function () {
       open();
-    });
-    btn_reset.click(function () {
-      close();
     });
 
     function open() {
       envelope.addClass("open").removeClass("close");
+      setTimeout(function() {
+        startKaraoke();
+      }, 392); // Giảm từ 560ms xuống 392ms (nhanh hơn 30% nữa)
     }
 
     function close() {
       envelope.addClass("close").removeClass("open");
+      resetKaraoke();
     }
+
+    function autoReset() {
+      close();
+    }
+
+    // Khởi tạo
+    createKaraokeHTML();
   });
 </script>
 
