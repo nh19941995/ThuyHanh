@@ -277,6 +277,66 @@
       transition: opacity 0.3s ease, visibility 0.3s ease;
     }
 
+
+    /* Volume control styles */
+    .volume-control {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 20;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 10px 20px;
+      border-radius: 25px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .open .volume-control {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .volume-control label {
+      font-size: 16px;
+      margin: 0;
+    }
+
+    .volume-control input {
+      width: 120px;
+      height: 5px;
+      border-radius: 5px;
+      background: #ddd;
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    .volume-control input::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: #ff5757;
+      cursor: pointer;
+    }
+
+    .volume-control input::-moz-range-thumb {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: #ff5757;
+      cursor: pointer;
+      border: none;
+    }
+
     @keyframes slideUp {
       0% {
         top: 0;
@@ -356,6 +416,18 @@
   </div>
 </div>
 
+<!-- Audio element -->
+<audio id="backgroundMusic" loop>
+  <source src="love.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<!-- Volume control -->
+<div class="volume-control">
+  <label for="volumeSlider">🔊</label>
+  <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="0.7">
+</div>
+
 <div class="reset">
   <button id="open">Open</button>
 </div>
@@ -366,6 +438,11 @@
     var envelope = $('#envelope');
     var btn_open = $("#open");
     var karaokeContainer = $('#karaokeContainer');
+    var backgroundMusic = document.getElementById('backgroundMusic');
+    var volumeSlider = $('#volumeSlider');
+    
+    // Set initial volume
+    backgroundMusic.volume = 0.7;
     
     // Text content
     var messages = [
@@ -386,6 +463,25 @@
     var currentWordIndex = 0;
     var karaokeInterval;
     var isPlaying = false;
+
+    // Music control functions
+    function playMusic() {
+      backgroundMusic.play().catch((error) => {
+        console.log('Auto-play was prevented:', error);
+        // Show a message to user that they need to interact first
+        alert('Nhấn vào thư để phát nhạc!');
+      });
+    }
+
+    function stopMusic() {
+      backgroundMusic.pause();
+      backgroundMusic.currentTime = 0;
+    }
+
+    // Volume control event listener
+    volumeSlider.on('input', function() {
+      backgroundMusic.volume = this.value;
+    });
 
     // Tạo HTML cho karaoke
     function createKaraokeHTML() {
@@ -500,12 +596,16 @@
       envelope.addClass("open").removeClass("close");
       setTimeout(function() {
         startKaraoke();
+        // Start playing music when envelope opens
+        playMusic();
       }, 392); // Giảm từ 560ms xuống 392ms (nhanh hơn 30% nữa)
     }
 
     function close() {
       envelope.addClass("close").removeClass("open");
       resetKaraoke();
+      // Stop music when envelope closes
+      stopMusic();
     }
 
     function autoReset() {
