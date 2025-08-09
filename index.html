@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Thư Gửi Hạnh</title>
+  <title>Dịch Vụ Thiết Kế Website Chuyên Nghiệp</title>
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
     body {
       background-color: #f7d9da;
@@ -10,6 +11,7 @@
       padding: 0;
       height: 100vh;
       overflow: hidden;
+      font-family: 'Josefin Sans', sans-serif;
     }
 
     .envlope-wrapper {
@@ -195,7 +197,6 @@
       animation-delay: 0.7s;
     }
 
-    /* Styles cho karaoke text */
     .karaoke-container {
       position: fixed;
       top: 50%;
@@ -203,26 +204,26 @@
       transform: translate(-50%, -50%);
       z-index: 10;
       pointer-events: none;
-      width: 80%;
-      max-width: 600px;
-      max-height: 70vh;
-      padding: 20px;
+      width: 85%;
+      max-width: 650px;
+      max-height: 75vh;
+      padding: 25px;
       text-align: justify;
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: 15px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(15px);
+      border: 2px solid rgba(255, 255, 255, 0.3);
       overflow-y: auto;
     }
 
     .karaoke-line {
       font-family: 'Arial', sans-serif;
-      font-size: 18px;
+      font-size: 20px;
       font-weight: bold;
-      margin: 8px 0;
-      min-height: 25px;
-      line-height: 1.4;
+      margin: 12px 0;
+      min-height: 28px;
+      line-height: 1.5;
       opacity: 0;
       transform: translateY(20px);
       transition: opacity 0.5s ease, transform 0.5s ease;
@@ -238,27 +239,61 @@
     }
 
     .karaoke-line.completed {
-      opacity: 0.7;
+      opacity: 0.8;
       transform: translateY(0);
     }
 
     .karaoke-word {
       display: inline-block;
-      margin: 0 2px;
-      color: #666;
+      margin: 0 3px;
+      color: #444;
       transition: color 0.3s ease, transform 0.3s ease;
       text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
     }
 
     .karaoke-word.highlight {
-      color: #ff1744;
-      transform: scale(1.1);
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      color: #4facfe;
+      transform: scale(1.15);
+      text-shadow: 2px 2px 6px rgba(79, 172, 254, 0.4);
+      font-weight: 900;
     }
 
     .karaoke-word.completed {
-      color: #ff69b4;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+      color: #667eea;
+      text-shadow: 1px 1px 3px rgba(102, 126, 234, 0.3);
+    }
+
+    .contact-info {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 15px;
+      border-radius: 12px;
+      margin: 15px 0;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .contact-info a {
+      color: #ffecd2;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    .contact-info a:hover {
+      color: #ffffff;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+
+    .price-highlight {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      color: white;
+      padding: 8px 15px;
+      border-radius: 20px;
+      display: inline-block;
+      font-weight: bold;
+      margin: 0 5px;
+      box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3);
     }
 
     .close .karaoke-container {
@@ -275,66 +310,6 @@
       opacity: 0;
       visibility: hidden;
       transition: opacity 0.3s ease, visibility 0.3s ease;
-    }
-
-
-    /* Volume control styles */
-    .volume-control {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 20;
-      background: rgba(255, 255, 255, 0.9);
-      padding: 10px 20px;
-      border-radius: 25px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .open .volume-control {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .volume-control label {
-      font-size: 16px;
-      margin: 0;
-    }
-
-    .volume-control input {
-      width: 120px;
-      height: 5px;
-      border-radius: 5px;
-      background: #ddd;
-      outline: none;
-      -webkit-appearance: none;
-    }
-
-    .volume-control input::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 15px;
-      height: 15px;
-      border-radius: 50%;
-      background: #ff5757;
-      cursor: pointer;
-    }
-
-    .volume-control input::-moz-range-thumb {
-      width: 15px;
-      height: 15px;
-      border-radius: 50%;
-      background: #ff5757;
-      cursor: pointer;
-      border: none;
     }
 
     @keyframes slideUp {
@@ -391,6 +366,13 @@
       background-color: #fc9d9d;
       color: #a10000;
     }
+
+    .title-glow {
+      text-shadow: 0 0 20px rgba(79, 172, 254, 0.8);
+      color: #4facfe;
+      font-size: 24px;
+      font-weight: 900;
+    }
   </style>
 </head>
 <body>
@@ -422,14 +404,8 @@
   Your browser does not support the audio element.
 </audio>
 
-<!-- Volume control -->
-<div class="volume-control">
-  <label for="volumeSlider">🔊</label>
-  <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="0.7">
-</div>
-
 <div class="reset">
-  <button id="open">Open</button>
+  <button id="open">Mở Thư 💌</button>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -439,31 +415,10 @@
     var btn_open = $("#open");
     var karaokeContainer = $('#karaokeContainer');
     var backgroundMusic = document.getElementById('backgroundMusic');
-    var volumeSlider = $('#volumeSlider');
     
     // Set initial volume
     backgroundMusic.volume = 0.7;
     
-    // Text content
-    var messages = [
-      "Gửi Thúy Hạnh cô bạn nhỏ của tôi !",
-      "Những ngày này chắc hẳn em đang cảm thấy áp lực lắm đúng không?",
-      "Kỳ thi đại học đang đến gần, và anh biết em đang cố gắng hết sức để trở thành một điều dưỡng vì ước mơ muốn được chăm sóc cho người khác,",
-      "đó thật sự một ước mơ rất đẹp. ",
-      "Anh tự hào lắm, vì em đã chọn con đường yêu thương và tử tế như vậy.",
-      "Anh biết có những lúc em mệt mỏi, hoang mang, muốn bỏ cuộc,",
-      "nhưng mong em đừng quên lý do em bắt đầu và dù kết quả có thế nào đi nữa,",
-      "em đã can đảm hơn rất nhiều người rồi vì em đã dám mơ và dám bước đi. ",
-      "Cô bạn nhỏ à, hãy cứ bước tiếp nhé",
-      "Vì phía trước, dù là khó khăn hay rực rỡ",
-      "đó vẫn sẽ là hành trình mà anh mong được nắm tay em đi cùng. 💕"
-    ];
-
-    var currentLineIndex = 0;
-    var currentWordIndex = 0;
-    var karaokeInterval;
-    var isPlaying = false;
-
     // Music control functions
     function playMusic() {
       backgroundMusic.play().catch((error) => {
@@ -477,22 +432,49 @@
       backgroundMusic.pause();
       backgroundMusic.currentTime = 0;
     }
+    
+    // Text content for romantic web service advertisement
+    var messages = [
+      '<span class="title-glow">💕 DỊCH VỤ LÀM WEBSITE TÁN GÁI SIÊU LÃNG MẠNG 💕</span>',
+      'Anh muốn chinh phục trái tim em bằng một website tình yêu đặc biệt?',
+      'Tôi chuyên tạo những trang web lãng mạn để anh tỏ tình độc đáo! 💖',
+      '✨ Trang web tình yêu cá nhân hóa, làm tan chảy trái tim nàng',
+      '🌹 Hiệu ứng animation đẹp mắt, âm nhạc ngọt ngào',
+      '💌 Thư tình điện tử, album ảnh kỷ niệm cực kỳ lãng mạn',
+      '🎭 Thiết kế theo câu chuyện tình yêu của riêng anh và em',
+      '🏆 Đảm bảo 99% thành công trong việc tỏ tình qua website!',
+      '<div class="contact-info">📞 Hotline tư vấn: <a href="tel:0773307333">0773307333</a></div>',
+      '<div class="contact-info">📘 Facebook: <a href="https://www.facebook.com/hieuxtx" target="_blank">facebook.com/hieuxtx</a></div>',
+      '💰 Bảng giá dịch vụ tán gái online:',
+      '<span class="price-highlight">Website tán gái mới: 500.000đ</span>',
+      '<span class="price-highlight">Sửa đổi nội dung tình yêu: 100.000đ</span>',
+      'Liên hệ ngay để có website tán gái cực chất! 🔥',
+      'Tỏ tình bằng website - Độc đáo - Lãng mạn - Hiệu quả 100%! 💘'
+    ];
 
-    // Volume control event listener
-    volumeSlider.on('input', function() {
-      backgroundMusic.volume = this.value;
-    });
+    var currentLineIndex = 0;
+    var currentWordIndex = 0;
+    var karaokeInterval;
+    var isPlaying = false;
 
     // Tạo HTML cho karaoke
     function createKaraokeHTML() {
       karaokeContainer.empty();
       messages.forEach(function(message, lineIndex) {
         var line = $('<div class="karaoke-line" data-line="' + lineIndex + '"></div>');
-        var words = message.split(' ');
-        words.forEach(function(word, wordIndex) {
-          var wordSpan = $('<span class="karaoke-word" data-word="' + wordIndex + '">' + word + '</span>');
-          line.append(wordSpan);
-        });
+        
+        // Check if message contains HTML tags
+        if (message.includes('<')) {
+          line.html(message);
+          // For HTML content, we'll treat the whole line as one "word"
+          line.attr('data-html', 'true');
+        } else {
+          var words = message.split(' ');
+          words.forEach(function(word, wordIndex) {
+            var wordSpan = $('<span class="karaoke-word" data-word="' + wordIndex + '">' + word + '</span>');
+            line.append(wordSpan);
+          });
+        }
         karaokeContainer.append(line);
       });
     }
@@ -509,7 +491,7 @@
       
       karaokeInterval = setInterval(function() {
         highlightNextWord();
-      }, 314); // Giảm từ 448ms xuống 314ms (nhanh hơn 30% nữa)
+      }, 400); // Slightly slower for better readability
     }
 
     // Hiển thị dòng hiện tại
@@ -525,13 +507,34 @@
       if (currentLineElement.length) {
         var container = $('#karaokeContainer');
         var scrollTop = currentLineElement.offset().top - container.offset().top + container.scrollTop() - container.height() / 2 + currentLineElement.height() / 2;
-        container.animate({scrollTop: scrollTop}, 300);
+        container.animate({scrollTop: scrollTop}, 400);
       }
     }
 
     // Highlight từ tiếp theo
     function highlightNextWord() {
       var currentLine = $('.karaoke-line[data-line="' + currentLineIndex + '"]');
+      
+      // Check if this is an HTML line
+      if (currentLine.attr('data-html') === 'true') {
+        // For HTML lines, just show them and move to next line
+        setTimeout(function() {
+          currentLine.removeClass('active').addClass('completed');
+          currentLineIndex++;
+          currentWordIndex = 0;
+          
+          if (currentLineIndex < messages.length) {
+            showCurrentLine();
+          } else {
+            stopKaraoke();
+            setTimeout(function() {
+              autoReset();
+            }, 2000);
+          }
+        }, 1500); // Show HTML lines longer
+        return;
+      }
+      
       var words = currentLine.find('.karaoke-word');
       
       if (currentWordIndex < words.length) {
@@ -554,14 +557,14 @@
           // Chuyển sang dòng tiếp theo
           setTimeout(function() {
             showCurrentLine();
-          }, 196); // Giảm từ 280ms xuống 196ms (nhanh hơn 30% nữa)
+          }, 300);
         } else {
-          // Kết thúc karaoke - đánh dấu dòng cuối cùng là completed
+          // Kết thúc karaoke
           $('.karaoke-line[data-line="' + (currentLineIndex - 1) + '"]').removeClass('active').addClass('completed');
           stopKaraoke();
           setTimeout(function() {
             autoReset();
-          }, 1176); // Giảm từ 1680ms xuống 1176ms (nhanh hơn 30% nữa)
+          }, 2000);
         }
       }
     }
@@ -598,7 +601,7 @@
         startKaraoke();
         // Start playing music when envelope opens
         playMusic();
-      }, 392); // Giảm từ 560ms xuống 392ms (nhanh hơn 30% nữa)
+      }, 600);
     }
 
     function close() {
